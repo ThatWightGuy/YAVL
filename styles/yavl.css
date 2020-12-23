@@ -1,0 +1,23 @@
+.yavl-container {
+	position: relative;
+}
+.yavl-container label {
+	display: inline-block;
+}
+.y-label-top label{
+	display: block;
+}
+.y-label-bottom label{
+	display: block;
+}
+.y-label-left label{
+	display: inline-block;
+}
+.y-label-right label{
+	display: inline-block;
+}
+.y-label-infield label {
+	position: absolute;
+	left: 0;
+	cursor: text;
+}
