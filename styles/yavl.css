@@ -21,3 +21,6 @@
 	left: 0;
 	cursor: text;
 }
+.yavl-filled.y-label-infield label{
+	display: none;
+}
