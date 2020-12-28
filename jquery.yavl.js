@@ -23,17 +23,20 @@
 			container.addClass('y-label-infield');	
 			return true;
 		},
-		'infield-float': function(container, field) {
-			container.addClass('y-label-float');
-			return true;
-		}
 	}
 
-	// Pre-defined options for yval attribute. Custom attributes are created
-	// in "validOptions" parameter in the options object on init.
+	// Pre-defined options for yavl attribute. Custom attributes are created
+	// in "validation" parameter in the options object on init.
 	var validation = {
-		'email': /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/,
-		'phone': /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im,
+		'email': function(value) {
+			var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+			return regex.test(value);
+		},
+		'phone': function(value) {
+			var regex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+			return regex.test(value);
+		},
+		
 	}
 
 	var addValid = function(input) {
@@ -57,7 +60,7 @@
 
 			if (validation[$(this).attr('yavl')]) {
 				if ($(this).attr('yavl-req') != 'false') {
-					if (validation[$(this).attr('yavl')].test(this.value)) {
+					if (validation[$(this).attr('yavl')](this.value)) {
 						addValid($(this));
 					}
 					else {
@@ -95,6 +98,14 @@
 
 			// Add Field To Validation Container:
 			$(fields[i]).appendTo(container);
+
+			// Add initial validation:
+			if ($(fields[i]).attr('yavl-req') != 'false') {
+				addInvalid($(fields[i]));
+			}
+			else {
+				addValid($(fields[i]));
+			}
 
 			// Generate Label if "yavl-label" isn't set to false (requires name attr to be set):
 			if ($(fields[i]).attr('name') && ($(fields[i]).attr('yavl-label') != 'false')) {
