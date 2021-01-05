@@ -86,6 +86,24 @@
 			if (!labelFunctions[options.labelType](container, field)) {
 				container.addClass(options.labelType);
 			}
+			else {
+				// Removes inline labels from any checkbox or radio fields:
+				if (['checkbox', 'radio'].includes(field.attr('type')) && container.hasClass('y-label-infield')) {
+
+					container.removeClass('y-label-infield');
+
+					// Option "checkLabelType" cannot be "infield":
+					if (options.checkLabelType && options.checkLabelType != 'infield') {
+						labelFunctions[options.checkLabelType](container, field);
+					}
+					else {
+						labelFunctions['right'](container, field);
+					}
+				}
+			}
+		}
+		else {
+			labelFunctions['right'](container, field);
 		}
 	}
 
@@ -101,7 +119,12 @@
 
 			// Add initial validation:
 			if ($(fields[i]).attr('yavl-req') != 'false') {
-				addInvalid($(fields[i]));
+				if (!$(fields[i]).value) {
+					addInvalid($(fields[i]));
+				}
+				else {
+					addValid($(fields[i]));
+				}
 			}
 			else {
 				addValid($(fields[i]));
@@ -116,28 +139,74 @@
 					f_val = $(fields[i]).attr('name');
 					l_val = $(fields[i]).attr('yavl-name')
 				}
+				else if ($(fields[i]).attr('value')){
+					f_val = $(fields[i]).attr('name');
+					l_val = $(fields[i]).attr('value');
+				}
 				else {
 					f_val = $(fields[i]).attr('name');
-					l_val = $(fields[i]).attr('name');
+					l_val = $(fields[i]).attr('name')
 				}
 
 				var label_str = '<label for="' + f_val + '">' + l_val + '</label>' 
 
 				$(label_str).appendTo(container);
-				$(fields[i]).attr('id', f_val);
+
+				if (['checkbox', 'radio'].includes($(fields[i]).attr('type'))) {
+					$(fields[i]).attr('id', f_val + "-" + $(fields[i]).attr('value'));
+				} 
+				else {
+					$(fields[i]).attr('id', f_val);
+				}
 				
 				labelClass(options, container, $(fields[i]));
 			}
 		}
 	}
 
-	$.fn.yavl = function (options) {
+	var submitHanlder = function(form, callback) {
+		const allTrue = (value) => value == true;
+		
+		form.submit(function(e) {
+			const fields = $(form).find('.yavl-container');
+			var valid = {};
+
+			for (var i = 0; i < fields.length; i++) {
+				var name = $(fields[i]).find('[yavl]').attr('name');
+
+				if (!valid[name]) {
+					valid[name] = false;
+				}
+
+				if ($(fields[i]).hasClass('yavl-valid')) {
+					valid[name] = true;
+				}
+			}
+
+			if (typeof callback === 'function') {
+				callback();
+			}
+
+			if (!Object.values(valid).every(allTrue)) {
+				e.preventDefault();
+			}
+		});
+	}
+
+	$.fn.yavl = function (options={}) {
 		// Merge custom validation from options into validation object:
 		if (options.validation) {
 			validation = Object.assign(validation, options.validation);
 		}
 
+		// Initialize form fields:
 		fieldInit(this, options);
-		validateInput(options);
+
+		// Validation on input handler:
+		validateInput();
+
+		// Submit Handler options.yavlSubmit is an optional callback function provided by user:
+		if (options.yavlSubmit) submitHanlder(this, options.yavlSubmit());
+		else submitHanlder(this);
 	}
 }(jQuery));
