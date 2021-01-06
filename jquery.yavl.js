@@ -51,6 +51,7 @@
 
 	var validateInput = function(){
 		$('[yavl]').on('input', function() {
+			console.log('click');
 			if (this.value) {
 				$(this).parent().addClass('yavl-filled');
 			}
@@ -73,8 +74,14 @@
 			}
 			else {
 				if ($(this).attr('yavl-req') != 'false') {
-					if (this.value) addValid($(this));
-					else addInvalid($(this));
+					if (['checkbox', 'radio'].includes($(this).attr('type'))) {
+						if (this.checked) addValid($(this));
+						else addInvalid($(this));
+					} 
+					else {
+						if (this.value) addValid($(this));
+						else addInvalid($(this));
+					}
 				}
 				else addValid($(this));
 			}
@@ -184,7 +191,7 @@
 			}
 
 			if (typeof callback === 'function') {
-				callback();
+				callback(form);
 			}
 
 			if (!Object.values(valid).every(allTrue)) {

@@ -1,5 +1,10 @@
 .yavl-container {
 	position: relative;
+	display: block;
+	width: 100%;
+}
+.yavl-container input, .yavl-container textarea {
+	box-sizing: border-box;
 }
 .yavl-container label {
 	display: inline-block;
