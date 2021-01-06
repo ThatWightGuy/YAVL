@@ -5,6 +5,6 @@ Yet Another Validation Library - jQuery plugin for easily validating field eleme
 
 ### Initialization:
 
-'''Javascript
+```Javascript
 $(form).yavl();
-'''
+```
