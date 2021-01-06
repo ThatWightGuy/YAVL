@@ -26,7 +26,7 @@ Other attributes can also be provided on each input for extra validation options
 <input yavl name="Name">
 <input yavl="phone" name="Number" yavl-name="Phone">
 <input yavl="email" name="Email">
-<select yavl yavl-label="false">
+<select yavl name="Options" yavl-label="false">
 	...
 </select>
 <textarea yavl name="Message" yavl-req="false"></textarea>
