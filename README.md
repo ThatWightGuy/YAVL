@@ -5,7 +5,7 @@ Yet Another Validation Library - jQuery plugin for easily validating field eleme
 
 ## Initialization:
 
-At minimum, all inputs require two attributes: ```yavl``` and ```name```. Attribute ```yavl``` tells the validator that the current field requires validation.
+At minimum, all inputs require two attributes: ```yavl``` and ```name```. Attribute ```yavl``` tells the validator that the current field requires validation while ```name``` (on top of its main function) is the fallback for how YAVL determines the label text.
 
 ### Example:
 ```HTML 
