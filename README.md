@@ -9,7 +9,7 @@ At minimum, all inputs require two attributes: ```yavl``` and ```name```. Attrib
 
 ### Example:
 ```HTML 
-<input yavl name="test"></input>
+<input yavl name="test">
 ```
 
 Other attributes can also be provided on each input for extra validation options:
