@@ -51,7 +51,6 @@
 
 	var validateInput = function(){
 		$('[yavl]').on('input', function() {
-			console.log('click');
 			if (this.value) {
 				$(this).parent().addClass('yavl-filled');
 			}
